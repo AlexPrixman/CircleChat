@@ -27,7 +27,7 @@ function applyTheme(preference: ThemePreference): Theme {
   const resolved = preference === "system" ? deviceTheme() : preference;
   document.documentElement.dataset.theme = resolved;
   document.querySelector('meta[name="theme-color"]')?.setAttribute(
-    "content", resolved === "dark" ? "#14221e" : "#f6f8f9",
+    "content", resolved === "dark" ? "#151f1e" : "#f5f7f6",
   );
   return resolved;
 }
@@ -97,7 +97,7 @@ export function ThemeSwitch() {
   return (
     <button
       type="button"
-      className="theme-switch icon"
+      className="theme-switch icon inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-transparent text-[var(--muted-strong)] transition-colors hover:bg-soft hover:text-ink"
       aria-label={`Switch to ${next} mode`}
       title={`Switch to ${next} mode`}
       onClick={() => setPreference(next)}
@@ -108,8 +108,8 @@ export function ThemeSwitch() {
 }
 
 const choices = [
-  { value: "light", label: "Light", detail: "Bright & fresh", Icon: Sun },
-  { value: "dark", label: "Dark", detail: "Easy on the eyes", Icon: Moon },
+  { value: "light", label: "Light", detail: "Soft & natural", Icon: Sun },
+  { value: "dark", label: "Dark", detail: "Gentle charcoal", Icon: Moon },
   { value: "system", label: "Device", detail: "System default", Icon: Monitor },
 ] as const;
 

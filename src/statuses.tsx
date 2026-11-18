@@ -361,7 +361,7 @@ function StatusComposer({
           <h2>Create a status</h2>
         </div>
         <button
-          className="icon"
+          className="icon inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-transparent text-[var(--muted-strong)] transition-colors hover:bg-soft hover:text-ink"
           aria-label="Close status composer"
           onClick={close}
         >
@@ -512,7 +512,7 @@ function StatusComposer({
           <small>
             Visible to your unblocked contacts for exactly 24 hours.
           </small>
-          <button className="primary" disabled={busy}>
+          <button className="primary inline-flex min-h-10 items-center justify-center gap-2.5 rounded-xl border border-transparent bg-accent px-4 py-2.5 text-[13px] font-semibold text-on-accent transition-colors hover:bg-accent-hover" disabled={busy}>
             {busy ? "Sharing…" : "Share status"}
           </button>
         </footer>
@@ -593,7 +593,7 @@ function StatusViewer({
         </div>
         {item.owner.id === me.id && (
           <button
-            className="icon"
+            className="icon inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-transparent text-[var(--muted-strong)] transition-colors hover:bg-soft hover:text-ink"
             aria-label="Delete status"
             disabled={busy}
             onClick={remove}
@@ -602,7 +602,7 @@ function StatusViewer({
           </button>
         )}
         <button
-          className="icon"
+          className="icon inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-transparent text-[var(--muted-strong)] transition-colors hover:bg-soft hover:text-ink"
           aria-label="Close status viewer"
           onClick={close}
         >

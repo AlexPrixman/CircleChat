@@ -16,7 +16,7 @@ A responsive, real-time messenger built with React, TypeScript, Express, Socket.
 - Direct and group voice calls with microphone mute, join/decline/leave controls, and authenticated Socket.IO signaling. Audio is peer-to-peer through WebRTC.
 - Delete a chat for yourself: it disappears from your list, and you cannot view or download its earlier messages or media. Other members retain their history. A new message brings the chat back with only the new history visible to you.
 - Editable profiles, case-insensitive unique handles, people search, blocking, own-message removal and message reporting. Moderator report review is available through the API.
-- Fresh mint-and-ink interface with coordinated light and dark themes. Appearance follows the device by default, updates when the system theme changes, and supports persistent Light/Dark/Device overrides in profile settings. Quick theme switches are available on sign-in and in the navigation rail; preferences sync across tabs on the same browser.
+- Minimal Tailwind CSS v4 interface with calm sage-and-slate light and dark themes. Appearance follows the device by default, updates when the system theme changes, and supports persistent Light/Dark/Device overrides in profile settings. Quick theme switches are available on sign-in and in the navigation rail; preferences sync across tabs on the same browser.
 - Desktop and mobile layouts, keyboard controls and focus-contained dialogs.
 
 This is a portfolio demo, not a replacement for a production messaging platform. Chats and statuses are access-controlled, **not end-to-end encrypted**. Do not share sensitive information. Group membership is fixed when a group is created. Blocking pauses sending, hides shared statuses and ends active calls in shared conversations but does not erase existing history. Removing a message hides its attached media from the application; it does not physically purge the storage object. The API makes statuses inaccessible at expiry and subsequent status activity removes expired database rows and private objects; a bucket lifecycle policy is still recommended as a fallback. Deleting a chat for yourself leaves the stored messages and media available to other members. No video calls, push notifications or account deletion workflow are included.
@@ -91,3 +91,15 @@ Authenticated routes require a signed Neon JWT in `Authorization: Bearer ...`. S
 | POST | `/api/logout` | Revoke previously issued account JWTs and disconnect their sockets |
 
 Socket events: `message:send` (acknowledged, idempotent), `message:new`, `message:updated`, `message:read`, `typing`, `presence:changed`, `conversations:changed`, `statuses:changed`, `profile:updated`, `auth:expired`. Authenticated call actions are `call:start`, `call:join`, `call:signal`, `call:decline`, `call:leave`; notifications include `call:invite`, `call:changed`, `call:participant-left`, `call:ended`. Reconnecting clients refetch persisted messages and statuses; sockets are not the source of truth.
+
+## Styling and design system
+
+The UI now uses **Tailwind CSS v4** via the official Vite plugin. CSS-first semantic tokens defined with `@theme inline` map to the current `data-theme` variables, and the core login/chat layouts, common buttons, composer, sidebar, and main panels use Tailwind utilities directly in TSX.
+
+- Theme preference remains Light, Dark, or Device, with local persistence and cross-tab sync.
+- The palette uses softened sage accents, neutral surfaces, and subdued message bubbles; core normal-text color pairs are verified by the existing WCAG AA contrast tests.
+- Primary buttons, icon buttons, and send controls use consistent compact sizing, restrained 12px-radius corners and modest hover effects.
+- The responsive chat shell uses `min-w-0`, `min-h-0` and breakpoint guards to keep the composer and conversation controls inside the viewport at 320px and above.
+- The existing `src/styles.css` retains specialized selectors for status cards, audio, emoji pickers, modal internals and media layouts. These are intentionally maintained as component-specific CSS while the UI migrates incrementally to utility classes; avoid introducing additional global layout rules there.
+
+Run `npm run build`, `npm test` and `npm run test:e2e` before merging UI changes.

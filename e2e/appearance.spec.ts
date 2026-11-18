@@ -100,3 +100,41 @@ test("conversation controls stay reachable across narrow, tablet and wide layout
     }
   }
 });
+
+
+test("Tailwind shell uses calm semantic colors and compact controls in both themes", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/");
+  const palette = await page.evaluate(() => {
+    const styles = getComputedStyle(document.documentElement);
+    return { accent: styles.getPropertyValue("--accent").trim(), canvas: styles.getPropertyValue("--canvas").trim() };
+  });
+  expect(palette).toEqual({ accent: "#a5caba", canvas: "#f5f7f6" });
+  await register(page, "Tailwind preview");
+  await startChat(page);
+  for (const theme of ["light", "dark"] as const) {
+    await page.emulateMedia({ colorScheme: theme });
+    await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+    await expect(page.locator(".chat-panel")).toBeVisible();
+    const dimensions = await page.evaluate(() => {
+      const chat = document.querySelector(".chat-panel")!;
+      const send = document.querySelector<HTMLButtonElement>(".send")!;
+      const composer = document.querySelector(".composer")!;
+      const chatRect = chat.getBoundingClientRect();
+      const sendRect = send.getBoundingClientRect();
+      const composerRect = composer.getBoundingClientRect();
+      return {
+        rootOverflow: document.documentElement.scrollWidth > window.innerWidth,
+        sendWidth: sendRect.width,
+        sendRadius: Number.parseFloat(getComputedStyle(send).borderRadius),
+        sendInside: sendRect.left >= chatRect.left && sendRect.right <= chatRect.right,
+        composerInside: composerRect.left >= chatRect.left && composerRect.right <= chatRect.right,
+      };
+    });
+    expect(dimensions.rootOverflow).toBe(false);
+    expect(dimensions.sendWidth).toBeLessThanOrEqual(44);
+    expect(dimensions.sendRadius).toBeLessThanOrEqual(14);
+    expect(dimensions.sendInside).toBe(true);
+    expect(dimensions.composerInside).toBe(true);
+  }
+});

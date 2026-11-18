@@ -88,7 +88,7 @@ function Modal({
     >
       <header>
         <h2>{title}</h2>
-        <button aria-label="Close dialog" className="icon" onClick={close}>
+        <button aria-label="Close dialog" className="icon inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-transparent text-[var(--muted-strong)] transition-colors hover:bg-soft hover:text-ink" onClick={close}>
           <X />
         </button>
       </header>
@@ -161,9 +161,9 @@ function Login({ done }: { done: () => void }) {
     }
   }
   return (
-    <div className="login">
-      <section className="intro">
-        <header className="intro-brand">
+    <div className="login grid min-h-dvh grid-cols-[1.08fr_1fr] gap-4 p-4">
+      <section className="intro relative flex min-h-[calc(100dvh-32px)] flex-col justify-between overflow-hidden rounded-[20px] bg-hero px-[clamp(30px,5vw,76px)] py-8 text-[var(--hero-ink)]">
+        <header className="intro-brand flex items-center justify-between gap-2.5">
           <a className="brand" href="/">
             <span className="brand-symbol"><MessageCircle /></span>
             circlechat<span className="brand-dot">.</span>
@@ -200,8 +200,8 @@ function Login({ done }: { done: () => void }) {
           <ShieldCheck size={18} /> Member-only chats · Private media access
         </footer>
       </section>
-      <section className="auth">
-        <div className="auth-card">
+      <section className="auth flex items-center justify-center px-[35px] py-[54px]">
+        <div className="auth-card w-full max-w-[375px]">
           <span className="eyebrow">YOUR CIRCLE IS WAITING</span>
           <h2>
             {mode === "signin"
@@ -273,7 +273,7 @@ function Login({ done }: { done: () => void }) {
               </p>
             )}
             {notice && <p role="status">{notice}</p>}
-            <button className="primary" disabled={busy}>
+            <button className="primary inline-flex min-h-10 items-center justify-center gap-2.5 rounded-xl border border-transparent bg-accent px-4 py-2.5 text-[13px] font-semibold text-on-accent transition-colors hover:bg-accent-hover" disabled={busy}>
               {busy
                 ? "Please wait…"
                 : mode === "signin"
@@ -662,8 +662,8 @@ function ChatApp({
     }
   }
   return (
-    <div className={"workspace " + (selected ? "conversation-open" : "")}>
-      <nav className="rail" aria-label="App">
+    <div className={"workspace grid h-dvh min-h-0 grid-cols-[64px_326px_minmax(0,1fr)] gap-2.5 overflow-hidden p-3 " + (selected ? "conversation-open" : "")}>
+      <nav className="rail flex min-h-0 flex-col items-center gap-8 rounded-[18px] bg-rail px-0 pb-[18px] pt-[22px] text-[var(--on-dark-muted)]" aria-label="App">
         <a className="logo-mark" href="/" aria-label="CircleChat home">
           <MessageCircle />
         </a>
@@ -690,7 +690,7 @@ function ChatApp({
           <Avatar name={me.name} />
         </div>
       </nav>
-      <aside className="sidebar">
+      <aside className="sidebar flex min-h-0 min-w-0 flex-col overflow-hidden rounded-[18px] border border-line bg-surface">
         <header>
           <div>
             <span className="eyebrow">YOUR EVERYDAY PEOPLE</span>
@@ -699,7 +699,7 @@ function ChatApp({
             </h1>
           </div>
           <button
-            className="new-button"
+            className="new-button grid size-10 shrink-0 place-items-center rounded-xl bg-accent text-on-accent transition-colors hover:bg-accent-hover"
             aria-label="New conversation"
             title="New conversation"
             onClick={() => setModal("new")}
@@ -708,7 +708,7 @@ function ChatApp({
           </button>
         </header>
         <StatusTray me={me} socket={liveSocket} onError={setError} />
-        <div className="search">
+        <div className="search mx-5 flex min-w-0 items-center gap-2.5 rounded-xl border border-transparent bg-soft px-3 text-subtle">
           <Search size={18} />
           <input
             aria-label="Search conversations"
@@ -720,7 +720,7 @@ function ChatApp({
         <div className="list-label">
           ALL CONVERSATIONS <span>{conversations.length}</span>
         </div>
-        <div className="conversation-list">
+        <div className="conversation-list min-h-0 flex-1 overflow-y-auto px-2.5 pb-3">
           {conversations
             .filter((c) =>
               titleOf(c, me.id).toLowerCase().includes(query.toLowerCase()),
@@ -729,7 +729,7 @@ function ChatApp({
               <button
                 key={c.id}
                 className={
-                  "conversation " + (selected === c.id ? "selected" : "")
+                  "conversation relative mb-1 flex w-full min-w-0 items-center gap-3 rounded-xl border border-transparent px-3 py-4 text-left " + (selected === c.id ? "selected" : "")
                 }
                 aria-current={selected === c.id ? "true" : undefined}
                 onClick={() => setSelected(c.id)}
@@ -765,7 +765,7 @@ function ChatApp({
           <small>circlechat</small>
         </footer>
       </aside>
-      <main className="chat-panel">
+      <main className="chat-panel relative flex min-h-0 min-w-0 flex-col overflow-hidden rounded-[18px] border border-line bg-surface">
         {error && (
           <div role="alert" className="error banner">
             {error}
@@ -776,9 +776,9 @@ function ChatApp({
         )}
         {current ? (
           <>
-            <header className="chat-header">
+            <header className="chat-header flex min-w-0 items-center gap-3 border-b border-line bg-surface px-[26px] py-5">
               <button
-                className="icon mobile-back"
+                className="icon mobile-back inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-transparent text-[var(--muted-strong)] transition-colors hover:bg-soft hover:text-ink"
                 aria-label="Back to conversations"
                 onClick={() => setSelected("")}
               >
@@ -788,7 +788,7 @@ function ChatApp({
                 name={titleOf(current, me.id)}
                 group={current.kind === "group"}
               />
-              <div className="chat-heading">
+              <div className="chat-heading min-w-0 flex-1">
                 <h2>{titleOf(current, me.id)}</h2>
                 <p>
                   {current.blocked
@@ -802,8 +802,8 @@ function ChatApp({
                           : "Your private conversation"}
                 </p>
               </div>
-              <div className="chat-header-actions">
-                <button className="icon" aria-label={calls.available?.active ? "Join voice call" : "Start voice call"}
+              <div className="chat-header-actions ml-auto flex shrink-0 items-center gap-1">
+                <button className="icon inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-transparent text-[var(--muted-strong)] transition-colors hover:bg-soft hover:text-ink" aria-label={calls.available?.active ? "Join voice call" : "Start voice call"}
                   title={calls.available?.active ? "Join voice call" : "Start voice call"}
                   disabled={!connected || current.blocked || !!calls.session}
                   onClick={() => {
@@ -811,8 +811,8 @@ function ChatApp({
                       void calls.join(current.id, calls.available.callId);
                     else void calls.start(current.id);
                   }}><Phone size={19} /></button>
-                <button className="icon" aria-label="Conversation members" title="Conversation members" onClick={() => setModal("settings")}><Users size={19} /></button>
-                <button className="icon" aria-label="Delete conversation for me" title="Delete conversation for me"
+                <button className="icon inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-transparent text-[var(--muted-strong)] transition-colors hover:bg-soft hover:text-ink" aria-label="Conversation members" title="Conversation members" onClick={() => setModal("settings")}><Users size={19} /></button>
+                <button className="icon inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-transparent text-[var(--muted-strong)] transition-colors hover:bg-soft hover:text-ink" aria-label="Delete conversation for me" title="Delete conversation for me"
                   onClick={() => {
                     if (!confirm("Delete this chat from your history? Other members keep their messages. New messages can bring it back.")) return;
                     void api(`/conversations/${current.id}`, { method: "DELETE" })
@@ -822,7 +822,7 @@ function ChatApp({
               </div>
             </header>
             <div
-              className="message-area"
+              className="message-area min-h-0 min-w-0 flex-1 overflow-y-auto bg-canvas px-[clamp(18px,4vw,60px)] py-6"
               aria-label="Messages"
               aria-busy={loading}
             >
@@ -924,7 +924,7 @@ function ChatApp({
               ))}
               <div ref={bottom} />
             </div>
-            <div className="composer-wrap">
+            <div className="composer-wrap relative min-w-0 bg-canvas px-6 pb-3 pt-4">
               <RecordingControls voice={voice} disabled={busy} />
               {photo && (
                 <div className="attachment">
@@ -938,7 +938,7 @@ function ChatApp({
                   </button>
                 </div>
               )}
-              <form className="composer" onSubmit={send}>
+              <form className="composer flex min-w-0 items-center gap-2 rounded-2xl border border-line-strong bg-surface p-2.5 shadow-sm" onSubmit={send}>
                 <label className="attach" title="Share a photo">
                   <ImagePlus />
                   <span className="sr-only">Attach photo</span>
@@ -1018,7 +1018,7 @@ function ChatApp({
                   }}
                 />
                 <button
-                  className="send"
+                  className="send grid size-10 shrink-0 place-items-center rounded-xl bg-accent text-on-accent transition-colors hover:bg-accent-hover"
                   aria-label="Send message"
                   disabled={
                     busy || current.blocked || voice.recording || (!draft.trim() && !photo && !voice.note)
@@ -1051,7 +1051,7 @@ function ChatApp({
               <br />
               Pick a conversation or start something new.
             </p>
-            <button className="primary" onClick={() => setModal("new")}>
+            <button className="primary inline-flex min-h-10 items-center justify-center gap-2.5 rounded-xl border border-transparent bg-accent px-4 py-2.5 text-[13px] font-semibold text-on-accent transition-colors hover:bg-accent-hover" onClick={() => setModal("new")}>
               Start a conversation <ArrowUpRight size={18} />
             </button>
             <small>
@@ -1199,7 +1199,7 @@ function NewChat({
             {error}
           </p>
         )}
-        <button className="primary" disabled={busy || !chosen.length}>
+        <button className="primary inline-flex min-h-10 items-center justify-center gap-2.5 rounded-xl border border-transparent bg-accent px-4 py-2.5 text-[13px] font-semibold text-on-accent transition-colors hover:bg-accent-hover" disabled={busy || !chosen.length}>
           {busy ? "Creating…" : "Start chatting"}
         </button>
       </form>
@@ -1289,7 +1289,7 @@ function SettingsPanel({
             onChange={(e) => setBio(e.target.value)}
           />
         </label>
-        <button className="primary" disabled={busy}>
+        <button className="primary inline-flex min-h-10 items-center justify-center gap-2.5 rounded-xl border border-transparent bg-accent px-4 py-2.5 text-[13px] font-semibold text-on-accent transition-colors hover:bg-accent-hover" disabled={busy}>
           Save profile
         </button>
       </form>
